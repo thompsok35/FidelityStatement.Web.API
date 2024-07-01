@@ -21,4 +21,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DAL\DTO\" />
+    <Folder Include="DAL\Contracts\" />
+    <Folder Include="DAL\Repositories\" />
+  </ItemGroup>
+
 </Project>

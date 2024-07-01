@@ -4,6 +4,7 @@ using FidelityStatement.Web.API.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FidelityStatement.Web.API.Migrations
 {
     [DbContext(typeof(FidelityStatementDbContext))]
-    partial class FidelityStatementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240705195710_Simplified the Stocks schema")]
+    partial class SimplifiedtheStocksschema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,32 +82,6 @@ namespace FidelityStatement.Web.API.Migrations
                     b.ToTable("Positions");
                 });
 
-            modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.PositionType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<int>("PositionTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PositionTypes");
-                });
-
             modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.Stock", b =>
                 {
                     b.Property<string>("StockSymbol")
@@ -130,64 +107,6 @@ namespace FidelityStatement.Web.API.Migrations
                     b.HasKey("StockSymbol");
 
                     b.ToTable("Stocks");
-                });
-
-            modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.StockTransaction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(19, 2)");
-
-                    b.Property<string>("BrokerageAccount")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<decimal?>("Commission")
-                        .HasColumnType("decimal(19, 2)");
-
-                    b.Property<decimal?>("Fees")
-                        .HasColumnType("decimal(19, 2)");
-
-                    b.Property<int>("PositionTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(19, 2)");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(19, 3)");
-
-                    b.Property<DateTime>("SettlementDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("StockSymbol")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("TransactionType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("UserUUID")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TransactionType", "StockSymbol", "Quantity", "Price", "Commission", "Fees", "Amount", "SettlementDate", "BrokerageAccount", "UserUUID")
-                        .IsUnique()
-                        .HasFilter("[Price] IS NOT NULL AND [Commission] IS NOT NULL AND [Fees] IS NOT NULL");
-
-                    b.ToTable("StockTransactions");
                 });
 
             modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.Transaction", b =>
@@ -277,9 +196,6 @@ namespace FidelityStatement.Web.API.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("ActionDescription")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");

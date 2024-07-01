@@ -4,6 +4,7 @@ using FidelityStatement.Web.API.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FidelityStatement.Web.API.Migrations
 {
     [DbContext(typeof(FidelityStatementDbContext))]
-    partial class FidelityStatementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240705203829_Added StockTransactions")]
+    partial class AddedStockTransactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,32 +82,6 @@ namespace FidelityStatement.Web.API.Migrations
                     b.ToTable("Positions");
                 });
 
-            modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.PositionType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
-
-                    b.Property<int>("PositionTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PositionTypes");
-                });
-
             modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.Stock", b =>
                 {
                     b.Property<string>("StockSymbol")
@@ -154,27 +131,20 @@ namespace FidelityStatement.Web.API.Migrations
                     b.Property<decimal?>("Fees")
                         .HasColumnType("decimal(19, 2)");
 
-                    b.Property<int>("PositionTypeId")
-                        .HasColumnType("int");
-
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(19, 2)");
 
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(19, 3)");
 
-                    b.Property<DateTime>("SettlementDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("SettlementDate")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("StockSymbol")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("TransactionType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("UserUUID")
                         .IsRequired()
@@ -182,10 +152,6 @@ namespace FidelityStatement.Web.API.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TransactionType", "StockSymbol", "Quantity", "Price", "Commission", "Fees", "Amount", "SettlementDate", "BrokerageAccount", "UserUUID")
-                        .IsUnique()
-                        .HasFilter("[Price] IS NOT NULL AND [Commission] IS NOT NULL AND [Fees] IS NOT NULL");
 
                     b.ToTable("StockTransactions");
                 });
@@ -277,9 +243,6 @@ namespace FidelityStatement.Web.API.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("ActionDescription")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");

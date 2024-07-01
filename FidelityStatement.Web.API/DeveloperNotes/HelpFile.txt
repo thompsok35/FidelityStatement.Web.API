@@ -1,5 +1,12 @@
 ﻿
 
 add-migration InitialMigration
+** Before adding a new migration make sure to update the DbContext with any new data model classes
 
 update-database
+
+
+** Do NOT add the DbContext directly in your API controllers
+Refactor the scaffolded API controllers with the abstracted DTOs
+
+

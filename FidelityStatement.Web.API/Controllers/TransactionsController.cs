@@ -138,7 +138,7 @@ namespace FidelityStatement.Web.API.Controllers
                             if (line != "")
                             {
                                 var values = line.Split(',');
-                                if (values[0] != "Run Date" || values[0].Trim().Count() < 9)
+                                if (values[0] != "Run Date" && values[0].Trim().Count() < 9)
                                 {
                                     var transaction = new Transaction
                                     {

@@ -1,32 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿//This model is used for purchase, sale, assigned-call and assigned-put stock transaction
+
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+
 
 namespace FidelityStatement.Web.API.DAL.Models
 {
-    public class Transaction
+    public class StockTransaction
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [MaxLength(50)]
-        public string? RunDate { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string? TransactionType { get; set; }
 
         [Required]
-        [MaxLength(255)]
-        public string? Action { get; set; }
+        public int PositionTypeId { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string? Symbol { get; set; }
-
-        [Required]
-        [MaxLength(255)]
-        public string? Description { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string? Type { get; set; }
+        [MaxLength(10)]
+        public string? StockSymbol { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(19, 3)")]
@@ -41,19 +37,12 @@ namespace FidelityStatement.Web.API.DAL.Models
         [Column(TypeName = "decimal(19, 2)")]
         public decimal? Fees { get; set; }
 
-        [Column(TypeName = "decimal(19, 2)")]
-        public decimal? AccruedInterest { get; set; }
-
         [Required]
         [Column(TypeName = "decimal(19, 2)")]
         public decimal Amount { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(19, 2)")]
-        public decimal CashBalance { get; set; }
-
-        [MaxLength(50)]
-        public string? SettlementDate { get; set; }
+        public DateTime SettlementDate { get; set; }
 
         [Required]
         [MaxLength(255)]
@@ -62,7 +51,5 @@ namespace FidelityStatement.Web.API.DAL.Models
         [Required]
         [MaxLength(255)]
         public string? UserUUID { get; set; }
-        
-        public bool isProcessed { get; set; }
     }
 }
