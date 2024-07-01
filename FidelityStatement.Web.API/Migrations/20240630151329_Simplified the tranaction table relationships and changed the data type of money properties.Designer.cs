@@ -4,6 +4,7 @@ using FidelityStatement.Web.API.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FidelityStatement.Web.API.Migrations
 {
     [DbContext(typeof(FidelityStatementDbContext))]
-    partial class FidelityStatementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240630151329_Simplified the tranaction table relationships and changed the data type of money properties")]
+    partial class Simplifiedthetranactiontablerelationshipsandchangedthedatatypeofmoneyproperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,15 +87,13 @@ namespace FidelityStatement.Web.API.Migrations
                         .HasColumnType("decimal(19, 2)");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(19, 3)");
+                        .HasColumnType("decimal(19, 2)");
 
-                    b.Property<string>("RunDate")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<DateTime>("RunDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("SettlementDate")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<DateTime?>("SettlementDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Symbol")
                         .IsRequired()
