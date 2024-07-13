@@ -98,9 +98,9 @@ namespace FidelityStatement.Web.API.Controllers
             foreach (var item in stockTransactions)
             {
                 // Assuming the Action string is at least 23 characters long
-                var _buy = item.Action.Length >= 12 ? item.Action.Substring(2, 10) : string.Empty;
+                var _buy = item.Action.Length >= 12 ? item.Action.Substring(0, 10) : string.Empty;
                 var _toOpen = item.Action.Length >= 32 ? item.Action.Substring(13, 19) : string.Empty;
-                var _assignedShares = item.Action.Length >= 26 ? item.Action.Substring(2, 24) : string.Empty;
+                var _assignedShares = item.Action.Length >= 26 ? item.Action.Substring(0, 24) : string.Empty;
                 if (_buy == "YOU BOUGHT" | _assignedShares == "YOU BOUGHT ASSIGNED PUTS")
                 {
                     var _AcquisitionType = String.Empty;
@@ -152,9 +152,9 @@ namespace FidelityStatement.Web.API.Controllers
             foreach (var item in stockTransactions)
             {
                 // Assuming the Action string is at least 23 characters long
-                var _sell = item.Action.Length >= 12 ? item.Action.Substring(2, 8) : string.Empty;
+                var _sell = item.Action.Length >= 12 ? item.Action.Substring(0, 8) : string.Empty;
                 var _toOpen = item.Action.Length >= 32 ? item.Action.Substring(13, 19) : string.Empty;
-                var _assignedShares = item.Action.Length >= 26 ? item.Action.Substring(2, 23) : string.Empty;
+                var _assignedShares = item.Action.Length >= 26 ? item.Action.Substring(0, 23) : string.Empty;
                 if (_sell == "YOU SOLD" | _assignedShares == "YOU SOLD ASSIGNED CALLS")
                 {
                     var _AcquisitionType = String.Empty;

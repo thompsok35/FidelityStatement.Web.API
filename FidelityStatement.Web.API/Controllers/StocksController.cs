@@ -98,7 +98,7 @@ namespace FidelityStatement.Web.API.Controllers
             foreach (var item in stockTransactions)
             {
                 // Assuming the Action string is at least 23 characters long
-                var _action = item.Action.Length >= 12 ? item.Action.Substring(2, 10) : string.Empty;
+                var _action = item.Action.Length >= 12 ? item.Action.Substring(0, 10) : string.Empty;
                 var _actionType = item.Action.Length >= 32 ? item.Action.Substring(13, 19) : string.Empty;
 
                 if (_action == "YOU BOUGHT" && _actionType != "OPENING TRANSACTION")

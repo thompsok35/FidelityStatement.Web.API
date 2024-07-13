@@ -105,15 +105,16 @@ namespace FidelityStatement.Web.API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("uploadfile")]
         //public async Task<IActionResult> PostUploadFile([FromForm] IFormFile file)
-        public async Task<ActionResult<string>> PostUploadFile(string filePath)
+        public async Task<ActionResult<string>> PostUploadFile(string filePath, string account, string username)
         {
             int _errorLines = 0;
             if (string.IsNullOrWhiteSpace(filePath))
             {
                 return BadRequest("File path cannot be null or empty.");
             }
+            string _account = account;
+            string _email = username;
 
-            
             if (!System.IO.File.Exists(filePath))
             {
                 return NotFound("File not found.");
@@ -138,15 +139,15 @@ namespace FidelityStatement.Web.API.Controllers
                             if (line != "")
                             {
                                 var values = line.Split(',');
-                                if (values[0] != "Run Date" && values[0].Trim().Count() < 9)
+                                if (values[0] != "Run Date" && values[0].Trim().Count() <= 10)
                                 {
                                     var transaction = new Transaction
                                     {
-                                        RunDate = values[0],
-                                        Action = values[1],
-                                        Symbol = values[2],
-                                        Description = values[3],
-                                        Type = values[4],
+                                        RunDate = values[0].Trim(),
+                                        Action = values[1].Length > 2 ? new string(values[1].Skip(2).ToArray()) : values[1],
+                                        Symbol = values[2].Trim(),
+                                        Description = values[3].Length > 2 ? new string(values[3].Skip(2).ToArray()) : values[3],
+                                        Type = values[4].Trim(),
                                         Quantity = decimal.Parse(values[5]),
                                         Price = string.IsNullOrWhiteSpace(values[6]) ? (decimal?)null : decimal.Parse(values[6]),
                                         Commission = string.IsNullOrWhiteSpace(values[7]) ? (decimal?)null : decimal.Parse(values[7]),
@@ -154,7 +155,9 @@ namespace FidelityStatement.Web.API.Controllers
                                         AccruedInterest = string.IsNullOrWhiteSpace(values[9]) ? (decimal?)null : decimal.Parse(values[9]),
                                         Amount = decimal.Parse(values[10]),
                                         CashBalance = decimal.Parse(values[11]),
-                                        SettlementDate = values[12]
+                                        SettlementDate = values[12],
+                                        BrokerageAccount = _account.Trim(),
+                                        UserUUID = _email.Trim()
                                     };
                                     transactions.Add(transaction);
                                     _dataLines++;
