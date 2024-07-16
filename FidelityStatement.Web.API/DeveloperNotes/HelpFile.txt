@@ -9,4 +9,15 @@ update-database
 ** Do NOT add the DbContext directly in your API controllers
 Refactor the scaffolded API controllers with the abstracted DTOs
 
+Azure Database Deployment:
+	In Package Manager Console, follow these steps:
+		1. Generate a deployment script by executing the following command:
+			Package Manager Console> Script-Migration -idempotent
+		2. Open Azure Data Studio
+		3. Add a new query window
+		4. Copy and Paste the deployment script
+		5. Execute the script
+		6. Refresh the database
+		7. Marvel in the magic
+
 

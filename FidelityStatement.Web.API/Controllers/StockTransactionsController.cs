@@ -114,6 +114,7 @@ namespace FidelityStatement.Web.API.Controllers
                             //CompanyName = item.Description.Replace('\\', ' ').Replace('"', ' ').Trim(),
                             StockSymbol = item.Symbol.Trim(),
                             Quantity = item.Quantity,
+
                             Price = item.Price,
                             Commission = item.Commission,
                             Fees = item.Fees,
@@ -121,7 +122,8 @@ namespace FidelityStatement.Web.API.Controllers
                             SettlementDate = ConvertToDateTime2(item.SettlementDate),
                             BrokerageAccount = item.BrokerageAccount,
                             UserUUID = item.UserUUID,
-                            TransactionType = _AcquisitionType
+                            TransactionType = _AcquisitionType,
+                            PositionTypeId = 0
                         };
 
                         //newStockTransactions.Add(thisStockTransaction);
@@ -175,7 +177,8 @@ namespace FidelityStatement.Web.API.Controllers
                             SettlementDate = ConvertToDateTime2(item.SettlementDate),
                             BrokerageAccount = item.BrokerageAccount,
                             UserUUID = item.UserUUID,
-                            TransactionType = _AcquisitionType
+                            TransactionType = _AcquisitionType,
+                            PositionTypeId = 3
                         };
 
                         //newStockTransactions.Add(thisStockTransaction);
