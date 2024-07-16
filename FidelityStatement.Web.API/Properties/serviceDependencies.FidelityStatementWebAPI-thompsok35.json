@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/FidelityStatementWebAPI-thompsok35/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsFidelityStatementDbConn_084A646CF4",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/thompsokdevdb/databases/FidelityStatementDb",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:FidelityStatementDbConnectionString",
+      "dynamicId": null
+    }
+  }
+}
