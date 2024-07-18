@@ -15,6 +15,7 @@ namespace FidelityStatement.Web.API.DAL
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<TransactionAction> TransactionActions { get; set; }
         public DbSet<StockTransaction> StockTransactions { get; set; }
+        public DbSet<OptionTransaction> OptionTransactions { get; set; }    
         public DbSet<PositionType> PositionTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -141,5 +142,6 @@ namespace FidelityStatement.Web.API.DAL
             OnModelCreatingPartial(modelBuilder);
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        public DbSet<FidelityStatement.Web.API.DAL.Models.OptionTransaction> OptionTransaction { get; set; } = default!;
     }
 }

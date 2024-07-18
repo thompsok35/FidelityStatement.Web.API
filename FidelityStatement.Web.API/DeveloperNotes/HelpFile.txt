@@ -1,6 +1,8 @@
 ﻿
-
 add-migration InitialMigration
+
+add-migration 
+
 ** Before adding a new migration make sure to update the DbContext with any new data model classes
 
 update-database

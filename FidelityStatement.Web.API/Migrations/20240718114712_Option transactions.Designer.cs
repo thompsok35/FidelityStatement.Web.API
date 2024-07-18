@@ -4,6 +4,7 @@ using FidelityStatement.Web.API.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FidelityStatement.Web.API.Migrations
 {
     [DbContext(typeof(FidelityStatementDbContext))]
-    partial class FidelityStatementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240718114712_Option transactions")]
+    partial class Optiontransactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,9 +68,6 @@ namespace FidelityStatement.Web.API.Migrations
                     b.Property<decimal?>("Commission")
                         .HasColumnType("decimal(19, 2)");
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<decimal?>("Fees")
                         .HasColumnType("decimal(19, 2)");
 
@@ -100,9 +100,6 @@ namespace FidelityStatement.Web.API.Migrations
 
                     b.Property<int>("StrategyTypeId")
                         .HasColumnType("int");
-
-                    b.Property<decimal?>("StrikePrice")
-                        .HasColumnType("decimal(19, 2)");
 
                     b.Property<string>("TransactionType")
                         .IsRequired()
