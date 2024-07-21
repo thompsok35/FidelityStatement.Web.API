@@ -98,19 +98,21 @@ namespace FidelityStatement.Web.API.Controllers
             foreach (var item in stockTransactions)
             {
                 // Assuming the Action string is at least 23 characters long
-                var _action = item.Action.Length >= 12 ? item.Action.Substring(0, 10) : string.Empty;
-                var _actionType = item.Action.Length >= 32 ? item.Action.Substring(13, 19) : string.Empty;
+                var _buy = item.Action.Length >= 12 ? item.Action.Substring(0, 10) : string.Empty;
+                var _sell = item.Action.Length >= 12 ? item.Action.Substring(0, 8) : string.Empty;
+                var _open = item.Action.Length >= 32 ? item.Action.Substring(13, 19) : string.Empty;
 
-                if (_action == "YOU BOUGHT" && _actionType != "OPENING TRANSACTION")
+                if (item.Symbol.Length <= 5)
                 {
                     Console.WriteLine("New stock position");
 
-                    if (item.Symbol.Length <= 5)
+                    if ( _buy == "YOU BOUGHT" | _sell == "YOU SOLD")
                     {
                         var thisStock = new Stock
                         {
                             CompanyName = item.Description.Replace('\\', ' ').Replace('"', ' ').Trim(),
                             StockSymbol = item.Symbol.Trim(),
+                            BrokerageAccount = item.BrokerageAccount,
                             UserUUID = item.UserUUID
                         };
                         // Only add Stocks that are not already stored in the table

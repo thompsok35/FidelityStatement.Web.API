@@ -23,6 +23,9 @@ namespace FidelityStatement.Web.API.DAL.Models
         [MaxLength(255)]
         public string? UserUUID { get; set; }
 
+        [MaxLength(255)]
+        public string? BrokerageAccount { get; set; }
+
         //[Column(TypeName = "decimal(19, 2)")]
         //public decimal? AquiredPrice { get; set; }
 

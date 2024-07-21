@@ -10,19 +10,43 @@ namespace FidelityStatement.Web.API.DAL.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        public int PositionUID { get; set; }
+
         [MaxLength(255)]
         public string Name { get; set; }
 
         [MaxLength(255)]
         public string? Description { get; set; }
 
-        public int StockId { get; set; }
+        [MaxLength(10)]
+        public string? StockSymbol { get; set; }
+
+        public int TotalShares { get; set; }
+
+        public bool UnsettledOptions { get; set; }
 
         [Column(TypeName = "decimal(19, 2)")]
-        public decimal? CostBasis { get; set; }
+        public decimal? TotalPnL { get; set; }
+
+        [Column(TypeName = "decimal(19, 2)")]
+        public decimal? TotalDividends { get; set; }
+
+        [Column(TypeName = "decimal(19, 2)")]
+        public decimal? TotalPremium { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string UserUUID { get; set; }
+        public string? BrokerageAccount { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        public string? UserUUID { get; set; }
+
+
+        ////Position has many Option and Stock transaction activities
+        //public virtual List<OptionTransaction>? OptionTransactionActivity { get; set; }  
+
+        //public virtual List<StockTransaction>? StockTransactionActivity { get; set; }
+
     }
 }

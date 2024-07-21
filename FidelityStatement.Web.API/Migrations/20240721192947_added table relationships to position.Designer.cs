@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FidelityStatement.Web.API.Migrations
 {
     [DbContext(typeof(FidelityStatementDbContext))]
-    [Migration("20240718202512_Added expiration date and strike price to OptionTransaction")]
-    partial class AddedexpirationdateandstrikepricetoOptionTransaction
+    [Migration("20240721192947_added table relationships to position")]
+    partial class addedtablerelationshipstoposition
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,7 +84,13 @@ namespace FidelityStatement.Web.API.Migrations
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PositionTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PositionUID")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Price")
@@ -93,7 +99,7 @@ namespace FidelityStatement.Web.API.Migrations
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(19, 3)");
 
-                    b.Property<DateTime>("SettlementDate")
+                    b.Property<DateTime?>("SettlementDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("StockSymbol")
@@ -119,6 +125,8 @@ namespace FidelityStatement.Web.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PositionId");
+
                     b.ToTable("OptionTransaction");
                 });
 
@@ -130,8 +138,10 @@ namespace FidelityStatement.Web.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal?>("CostBasis")
-                        .HasColumnType("decimal(19, 2)");
+                    b.Property<string>("BrokerageAccount")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Description")
                         .HasMaxLength(255)
@@ -142,8 +152,26 @@ namespace FidelityStatement.Web.API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int>("PositionUID")
+                        .HasColumnType("int");
+
                     b.Property<int>("StockId")
                         .HasColumnType("int");
+
+                    b.Property<decimal?>("TotalDividends")
+                        .HasColumnType("decimal(19, 2)");
+
+                    b.Property<decimal?>("TotalPnL")
+                        .HasColumnType("decimal(19, 2)");
+
+                    b.Property<decimal?>("TotalPremium")
+                        .HasColumnType("decimal(19, 2)");
+
+                    b.Property<int>("TotalShares")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("UnsettledOptions")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserUUID")
                         .IsRequired()
@@ -230,7 +258,13 @@ namespace FidelityStatement.Web.API.Migrations
                     b.Property<decimal?>("Fees")
                         .HasColumnType("decimal(19, 2)");
 
+                    b.Property<int>("PositionId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PositionTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PositionUID")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Price")
@@ -259,11 +293,33 @@ namespace FidelityStatement.Web.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TransactionType", "StockSymbol", "Quantity", "Price", "Commission", "Fees", "Amount", "SettlementDate", "BrokerageAccount", "UserUUID")
-                        .IsUnique()
-                        .HasFilter("[Price] IS NOT NULL AND [Commission] IS NOT NULL AND [Fees] IS NOT NULL");
+                    b.HasIndex("PositionId");
 
                     b.ToTable("StockTransactions");
+                });
+
+            modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.StrategyType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActionDescription")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Legs")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StrategyTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StrategyTypes");
                 });
 
             modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.Transaction", b =>
@@ -370,6 +426,35 @@ namespace FidelityStatement.Web.API.Migrations
                     b.HasOne("FidelityStatement.Web.API.DAL.Models.TransactionAction", null)
                         .WithMany("ActionInstructions")
                         .HasForeignKey("TransactionActionId");
+                });
+
+            modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.OptionTransaction", b =>
+                {
+                    b.HasOne("FidelityStatement.Web.API.DAL.Models.Position", "Position")
+                        .WithMany("OptionTransactionActivity")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.StockTransaction", b =>
+                {
+                    b.HasOne("FidelityStatement.Web.API.DAL.Models.Position", "Position")
+                        .WithMany("StockTransactionActivity")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.Position", b =>
+                {
+                    b.Navigation("OptionTransactionActivity");
+
+                    b.Navigation("StockTransactionActivity");
                 });
 
             modelBuilder.Entity("FidelityStatement.Web.API.DAL.Models.TransactionAction", b =>

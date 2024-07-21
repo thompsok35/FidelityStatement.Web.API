@@ -16,6 +16,8 @@ namespace FidelityStatement.Web.API.DAL.Models
         [Required]
         public int PositionTypeId { get; set; }
 
+        public int PositionUID { get; set; }
+
         [Required]
         [MaxLength(10)]
         public string? StockSymbol { get; set; }
@@ -33,8 +35,7 @@ namespace FidelityStatement.Web.API.DAL.Models
 
         [Required]
         public DateTime ExpirationDate { get; set; }
-
-        [Required]
+        
         public int StrategyTypeId { get; set; }
 
         [Required]
@@ -54,8 +55,7 @@ namespace FidelityStatement.Web.API.DAL.Models
         [Column(TypeName = "decimal(19, 2)")]
         public decimal Amount { get; set; }
 
-        [Required]
-        public DateTime SettlementDate { get; set; }
+        public DateTime? SettlementDate { get; set; }
 
         [Required]
         [MaxLength(255)]
@@ -64,5 +64,10 @@ namespace FidelityStatement.Web.API.DAL.Models
         [Required]
         [MaxLength(255)]
         public string? UserUUID { get; set; }
+
+        ////References
+        //[ForeignKey(nameof(PositionId))]
+        //public int PositionId { get; set; }
+        //public Position Position { get; set; }
     }
 }

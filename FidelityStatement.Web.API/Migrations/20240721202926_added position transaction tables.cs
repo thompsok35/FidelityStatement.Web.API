@@ -5,7 +5,7 @@
 namespace FidelityStatement.Web.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedtheOnModelCreatingvoidinthedbcontext : Migration
+    public partial class addedpositiontransactiontables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

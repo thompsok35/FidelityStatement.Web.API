@@ -100,94 +100,149 @@ namespace FidelityStatement.Web.API.Controllers
             {
                 try
                 {
+                    //Symbols > 10 characters are options
                     if (item.Symbol.Length >= 10)
                     {
                         //Action property analysis
-                        var _sell = item.Action.Length >= 12 ? item.Action.Substring(0, 32) : string.Empty;
-                        var _buy = item.Action.Length >= 12 ? item.Action.Substring(0, 34) : string.Empty;
+                        var _sell = item.Action.Length >= 12 ? item.Action.Substring(0, 28) : string.Empty;                        
+                        var _buy = item.Action.Length >= 12 ? item.Action.Substring(0, 30) : string.Empty;
+                        var _expired = item.Action.Length >= 12 ? item.Action.Substring(0, 7) : string.Empty;
+                        var _assigned = item.Action.Length >= 12 ? item.Action.Substring(0, 8) : string.Empty;
 
-                        if (_sell == "YOU SOLD OPENING TRANSACTION CAL")
+                        //Sell to Open = 20
+                        if (_sell == "YOU SOLD OPENING TRANSACTION")
                         {
                             var thisTransaction = new OptionTransaction { 
                                 TransactionType = "Sell",   
-                                PositionTypeId = 1, 
-                                OptionSymbol = item.Symbol,
+                                PositionTypeId = 20, 
+                                OptionSymbol = item.Symbol.Replace("-",""),
                                 StockSymbol = ExtractStockSymbol(item.Symbol),
                                 ExpirationDate = ConvertToExpirationDate(ExtractExpirationDate(item.Symbol, ExtractStockSymbol(item.Symbol))),
                                 StrikePrice = Convert.ToDecimal(ExtractStrikePrice(item.Symbol, ExtractStockSymbol(item.Symbol))),  
-                                OptionType = "Call",
+                                OptionType = ExtractOptionType(item.Symbol, ExtractStockSymbol(item.Symbol)),
                                 Quantity = item.Quantity,
                                 Price = item.Price,
                                 Commission = item.Commission,
                                 Fees = item.Fees,
                                 Amount = item.Amount,
-                                SettlementDate = ConvertToDateTime2(item.SettlementDate),
+                                SettlementDate = StringToDateTime2(item.SettlementDate),
                                 BrokerageAccount = item.BrokerageAccount,
                                 UserUUID = item.UserUUID,
                             };
                             _optionsTransactions.Add(thisTransaction);
                         }
-                        if (_sell == "YOU SOLD OPENING TRANSACTION PUT")
+                        //Buy to Close = 11
+                        if (_buy == "YOU BOUGHT CLOSING TRANSACTION")
+                        {
+                            var thisTransaction = new OptionTransaction
+                            {
+                                TransactionType = "Buy",
+                                PositionTypeId = 11,
+                                OptionSymbol = item.Symbol.Replace("-", ""),
+                                StockSymbol = ExtractStockSymbol(item.Symbol),
+                                ExpirationDate = ConvertToExpirationDate(ExtractExpirationDate(item.Symbol, ExtractStockSymbol(item.Symbol))),
+                                StrikePrice = Convert.ToDecimal(ExtractStrikePrice(item.Symbol, ExtractStockSymbol(item.Symbol))),
+                                OptionType = ExtractOptionType(item.Symbol, ExtractStockSymbol(item.Symbol)),
+                                Quantity = item.Quantity,
+                                Price = item.Price,
+                                Commission = item.Commission,
+                                Fees = item.Fees,
+                                Amount = item.Amount,
+                                SettlementDate = StringToDateTime2(item.SettlementDate),
+                                BrokerageAccount = item.BrokerageAccount,
+                                UserUUID = item.UserUUID,
+                            };
+                            _optionsTransactions.Add(thisTransaction);
+                        }
+
+                        //Buy to Open = 10
+                        if (_buy == "YOU BOUGHT OPENING TRANSACTION")
+                        {
+                            var thisTransaction = new OptionTransaction
+                            {
+                                TransactionType = "Buy",
+                                PositionTypeId = 10,
+                                OptionSymbol = item.Symbol.Replace("-", ""),
+                                StockSymbol = ExtractStockSymbol(item.Symbol),
+                                ExpirationDate = ConvertToExpirationDate(ExtractExpirationDate(item.Symbol, ExtractStockSymbol(item.Symbol))),
+                                StrikePrice = Convert.ToDecimal(ExtractStrikePrice(item.Symbol, ExtractStockSymbol(item.Symbol))),
+                                OptionType = ExtractOptionType(item.Symbol, ExtractStockSymbol(item.Symbol)),
+                                Quantity = item.Quantity,
+                                Price = item.Price,
+                                Commission = item.Commission,
+                                Fees = item.Fees,
+                                Amount = item.Amount,
+                                SettlementDate = StringToDateTime2(item.SettlementDate),
+                                BrokerageAccount = item.BrokerageAccount,
+                                UserUUID = item.UserUUID,
+                            };
+                            _optionsTransactions.Add(thisTransaction);
+                        }
+                        //Sell to Close = 21
+                        if (_sell == "YOU SOLD CLOSING TRANSACTION")
                         {
                             var thisTransaction = new OptionTransaction
                             {
                                 TransactionType = "Sell",
-                                PositionTypeId = 1,
-                                OptionSymbol = item.Symbol,
+                                PositionTypeId = 21,
+                                OptionSymbol = item.Symbol.Replace("-", ""),
                                 StockSymbol = ExtractStockSymbol(item.Symbol),
                                 ExpirationDate = ConvertToExpirationDate(ExtractExpirationDate(item.Symbol, ExtractStockSymbol(item.Symbol))),
                                 StrikePrice = Convert.ToDecimal(ExtractStrikePrice(item.Symbol, ExtractStockSymbol(item.Symbol))),
-                                OptionType = "Put",
+                                OptionType = ExtractOptionType(item.Symbol, ExtractStockSymbol(item.Symbol)),
                                 Quantity = item.Quantity,
                                 Price = item.Price,
                                 Commission = item.Commission,
                                 Fees = item.Fees,
                                 Amount = item.Amount,
-                                SettlementDate = ConvertToDateTime2(item.SettlementDate),
+                                SettlementDate = StringToDateTime2(item.SettlementDate),
                                 BrokerageAccount = item.BrokerageAccount,
                                 UserUUID = item.UserUUID,
                             };
                             _optionsTransactions.Add(thisTransaction);
                         }
-                        if (_buy == "YOU BOUGHT OPENING TRANSACTION CAL")
+
+                        //Expired to Close = 41
+                        if (_expired == "EXPIRED")
                         {
                             var thisTransaction = new OptionTransaction
                             {
-                                TransactionType = "Buy",
-                                PositionTypeId = 1,
-                                OptionSymbol = item.Symbol,
+                                TransactionType = "Expired",
+                                PositionTypeId = 41,
+                                OptionSymbol = item.Symbol.Replace("-", ""),
                                 StockSymbol = ExtractStockSymbol(item.Symbol),
                                 ExpirationDate = ConvertToExpirationDate(ExtractExpirationDate(item.Symbol, ExtractStockSymbol(item.Symbol))),
                                 StrikePrice = Convert.ToDecimal(ExtractStrikePrice(item.Symbol, ExtractStockSymbol(item.Symbol))),
-                                OptionType = "Call",
+                                OptionType = ExtractOptionType(item.Symbol, ExtractStockSymbol(item.Symbol)),
                                 Quantity = item.Quantity,
                                 Price = item.Price,
                                 Commission = item.Commission,
                                 Fees = item.Fees,
                                 Amount = item.Amount,
-                                SettlementDate = ConvertToDateTime2(item.SettlementDate),
+                                SettlementDate = StringToDateTime2(item.SettlementDate),
                                 BrokerageAccount = item.BrokerageAccount,
                                 UserUUID = item.UserUUID,
                             };
                             _optionsTransactions.Add(thisTransaction);
-                        }   
-                        if (_buy == "YOU BOUGHT OPENING TRANSACTION PUT")
+                        }
+                        //Assigned to Close = 51
+                        if (_assigned == "ASSIGNED")
                         {
                             var thisTransaction = new OptionTransaction
                             {
-                                TransactionType = "Buy",
-                                PositionTypeId = 1,
-                                OptionSymbol = item.Symbol,
+                                TransactionType = "Assigned",
+                                PositionTypeId = 51,
+                                OptionSymbol = item.Symbol.Replace("-", ""),
                                 StockSymbol = ExtractStockSymbol(item.Symbol),
                                 ExpirationDate = ConvertToExpirationDate(ExtractExpirationDate(item.Symbol, ExtractStockSymbol(item.Symbol))),
                                 StrikePrice = Convert.ToDecimal(ExtractStrikePrice(item.Symbol, ExtractStockSymbol(item.Symbol))),
-                                OptionType = "Put",
+                                OptionType = ExtractOptionType(item.Symbol, ExtractStockSymbol(item.Symbol)),
                                 Quantity = item.Quantity,
                                 Price = item.Price,
                                 Commission = item.Commission,
                                 Fees = item.Fees,
                                 Amount = item.Amount,
-                                SettlementDate = ConvertToDateTime2(item.SettlementDate),
+                                SettlementDate= StringToDateTime2(item.SettlementDate),
                                 BrokerageAccount = item.BrokerageAccount,
                                 UserUUID = item.UserUUID,
                             };
@@ -239,21 +294,37 @@ namespace FidelityStatement.Web.API.Controllers
         #region String Helpers
         private static DateTime ConvertToDateTime2(string dateString)
         {
+            if (string.IsNullOrWhiteSpace(dateString))
+            {
+                dateString = "01/01/1900";
+            }
+            string format = "MM/dd/yyyy"; // Format of the date string
+            DateTime parsedDate = DateTime.ParseExact(dateString, format, CultureInfo.InvariantCulture);
+            return parsedDate;
+        }
+
+        private static DateTime? StringToDateTime2(string dateString)
+        {
+            if (string.IsNullOrWhiteSpace(dateString))
+            {
+                return null;
+            }
             string format = "MM/dd/yyyy"; // Format of the date string
             DateTime parsedDate = DateTime.ParseExact(dateString, format, CultureInfo.InvariantCulture);
             return parsedDate;
         }
 
         private static DateTime ConvertToExpirationDate(string dateString)
-        {
-            // string format = "MM/dd/yyyy";
+        {            
+
             string yy = dateString.Substring(0, 2);
             string mm = dateString.Substring(2, 2);
             string dd = dateString.Substring(4, 2);
             string newDate = mm + "/" + dd + "/20" + yy;
             string format = "MM/dd/yyyy"; // Format of the date string
             DateTime parsedDate = DateTime.ParseExact(newDate, format, CultureInfo.InvariantCulture);
-            return parsedDate;
+
+            return parsedDate;                        
         }
 
         private static string ExtractStockSymbol(string input)
@@ -276,6 +347,35 @@ namespace FidelityStatement.Web.API.Controllers
             }
 
             return stockSymbol;
+        }
+
+        private static string ExtractOptionType(string input, string symbol)
+        {
+            input = input.Replace(symbol, "").Trim();
+            // Check if the input starts with '-', if so, remove it
+            if (input.StartsWith("-"))
+            {
+                input = input.Substring(1);
+            }
+
+            // Use regular expression to find all letters in the string
+            MatchCollection matches = Regex.Matches(input, "[A-Za-z]");
+
+            // Concatenate all found letters into the stockSymbol
+            string optionType = "";
+            foreach (Match match in matches)
+            {
+                optionType += match.Value;
+            }
+            if (optionType.ToLower() == "c")
+            {
+                optionType = "Call";
+            }
+            if (optionType.ToLower() == "p")
+            {
+                optionType = "Put";
+            }
+            return optionType;
         }
 
         private static string ExtractExpirationDate(string input, string symbol)

@@ -20,6 +20,8 @@ namespace FidelityStatement.Web.API.DAL.Models
         [Required]
         public int PositionTypeId { get; set; }
 
+        public int PositionUID { get; set; }
+
         [Required]
         [MaxLength(10)]
         public string? StockSymbol { get; set; }
@@ -51,5 +53,10 @@ namespace FidelityStatement.Web.API.DAL.Models
         [Required]
         [MaxLength(255)]
         public string? UserUUID { get; set; }
+
+        ////References
+        //[ForeignKey(nameof(PositionId))]
+        //public int PositionId { get; set; }
+        //public Position Position { get; set; }
     }
 }
