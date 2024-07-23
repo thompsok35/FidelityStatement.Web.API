@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FidelityStatement.Web.API.DAL;
 using FidelityStatement.Web.API.DAL.Models;
+using FidelityStatement.Web.API.DAL.DTO.Models;
 
 namespace FidelityStatement.Web.API.Controllers
 {
@@ -90,6 +91,7 @@ namespace FidelityStatement.Web.API.Controllers
           {
               return Problem("Entity set 'FidelityStatementDbContext.Positions'  is null.");
           }
+
             _context.Positions.Add(position);
             await _context.SaveChangesAsync();
 
@@ -120,5 +122,12 @@ namespace FidelityStatement.Web.API.Controllers
         {
             return (_context.Positions?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+        
+
     }
+
+    
+
 }

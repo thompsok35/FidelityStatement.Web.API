@@ -152,6 +152,8 @@ namespace FidelityStatement.Web.API.Controllers
             return NoContent();
         }
 
+
+
         private bool StockExists(int id)
         {
             return (_context.Stocks?.Any(e => e.Id == id)).GetValueOrDefault();

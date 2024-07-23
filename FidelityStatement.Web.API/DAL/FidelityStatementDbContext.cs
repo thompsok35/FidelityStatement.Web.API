@@ -12,6 +12,7 @@ namespace FidelityStatement.Web.API.DAL
 
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Position> Positions { get; set; }
+        public DbSet<PositionOption> PositionOptions { get; set; }
         public DbSet<PositionOptionTransaction> PositionOptionTransactions { get; set; }
         public DbSet<PositionStockTransaction> PositionStockTransactions { get; set; }
         public DbSet<Stock> Stocks { get; set; }

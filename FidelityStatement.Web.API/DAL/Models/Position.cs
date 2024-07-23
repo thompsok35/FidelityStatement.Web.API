@@ -23,6 +23,9 @@ namespace FidelityStatement.Web.API.DAL.Models
 
         public int TotalShares { get; set; }
 
+        [Column(TypeName = "decimal(19, 2)")]
+        public decimal? PerShareCostBasis { get; set; }
+
         public bool UnsettledOptions { get; set; }
 
         [Column(TypeName = "decimal(19, 2)")]
