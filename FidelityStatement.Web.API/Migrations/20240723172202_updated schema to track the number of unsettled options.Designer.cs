@@ -4,6 +4,7 @@ using FidelityStatement.Web.API.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FidelityStatement.Web.API.Migrations
 {
     [DbContext(typeof(FidelityStatementDbContext))]
-    partial class FidelityStatementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240723172202_updated schema to track the number of unsettled options")]
+    partial class updatedschematotrackthenumberofunsettledoptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,9 +133,6 @@ namespace FidelityStatement.Web.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal?>("AdjustedCostBasis")
-                        .HasColumnType("decimal(19, 2)");
-
                     b.Property<string>("BrokerageAccount")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -153,18 +153,12 @@ namespace FidelityStatement.Web.API.Migrations
                     b.Property<int>("PositionUID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StockID")
-                        .HasColumnType("int");
-
                     b.Property<string>("StockSymbol")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<decimal?>("TotalDividends")
                         .HasColumnType("decimal(19, 2)");
-
-                    b.Property<int>("TotalOptionTrades")
-                        .HasColumnType("int");
 
                     b.Property<decimal?>("TotalPnL")
                         .HasColumnType("decimal(19, 2)");
@@ -175,7 +169,7 @@ namespace FidelityStatement.Web.API.Migrations
                     b.Property<int>("TotalShares")
                         .HasColumnType("int");
 
-                    b.Property<int>("UnsettledOptionTrades")
+                    b.Property<int>("UnsettledOptions")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("UnsettledPremium")
@@ -221,7 +215,7 @@ namespace FidelityStatement.Web.API.Migrations
                     b.Property<DateTime?>("SettlementDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("StockId")
+                    b.Property<int>("StockId")
                         .HasColumnType("int");
 
                     b.Property<string>("StockSymbol")

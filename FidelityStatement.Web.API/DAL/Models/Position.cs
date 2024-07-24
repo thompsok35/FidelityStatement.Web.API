@@ -21,12 +21,20 @@ namespace FidelityStatement.Web.API.DAL.Models
         [MaxLength(10)]
         public string? StockSymbol { get; set; }
 
+        public int? StockID { get; set; }   = 0;    
+
         public int TotalShares { get; set; }
 
         [Column(TypeName = "decimal(19, 2)")]
         public decimal? PerShareCostBasis { get; set; }
 
-        public bool UnsettledOptions { get; set; }
+        [Column(TypeName = "decimal(19, 2)")]
+        public decimal? AdjustedCostBasis { get; set; }
+
+        public int UnsettledOptionTrades{ get; set; }
+
+        [Column(TypeName = "decimal(19, 2)")]
+        public decimal? UnsettledPremium { get; set; }
 
         [Column(TypeName = "decimal(19, 2)")]
         public decimal? TotalPnL { get; set; }
@@ -36,6 +44,8 @@ namespace FidelityStatement.Web.API.DAL.Models
 
         [Column(TypeName = "decimal(19, 2)")]
         public decimal? TotalPremium { get; set; }
+
+        public int TotalOptionTrades { get; set; }  
 
         [Required]
         [MaxLength(255)]

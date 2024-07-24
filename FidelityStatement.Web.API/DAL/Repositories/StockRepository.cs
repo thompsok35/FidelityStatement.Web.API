@@ -12,6 +12,7 @@ namespace FidelityStatement.Web.API.DAL.Repositories
 
         public StockRepository(FidelityStatementDbContext dbContext) : base(dbContext)
         {
+            _dbContext = dbContext; 
         }
 
         public int? StockId(string symbol, string user)
@@ -23,6 +24,20 @@ namespace FidelityStatement.Web.API.DAL.Repositories
                 return thisStock.Id;
             }
             return result;
+        }
+
+        public Stock AddNewStock(Stock stock)
+        {
+            var newStock = new Stock
+            {
+                StockSymbol = stock.StockSymbol,
+                CompanyName = stock.CompanyName,
+                BrokerageAccount = stock.BrokerageAccount,
+                UserUUID = stock.UserUUID
+            };
+            _dbContext.Stocks.Add(newStock);
+            _dbContext.SaveChanges();
+            return newStock;
         }
 
         public bool Exists(string symbol, string user)

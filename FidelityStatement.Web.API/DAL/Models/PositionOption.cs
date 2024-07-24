@@ -28,6 +28,9 @@ namespace FidelityStatement.Web.API.DAL.Models
         [Column(TypeName = "decimal(19, 2)")]
         public decimal Amount { get; set; }
 
+        [Required]
+        public bool isSettled { get; set; } 
+
         public DateTime? SettlementDate { get; set; }
 
         [Required]
@@ -40,7 +43,7 @@ namespace FidelityStatement.Web.API.DAL.Models
 
         public int PositionUID { get; set; }
 
-        public int StockId { get; set; }
+        public int? StockId { get; set; }
         public int StrategyTypeId { get; set; }
     }
 }

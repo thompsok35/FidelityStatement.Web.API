@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using FidelityStatement.Web.API.DAL;
 using FidelityStatement.Web.API.DAL.Models;
 using FidelityStatement.Web.API.DAL.DTO.Models;
+using FidelityStatement.Web.API.DAL.Contracts;
+using FidelityStatement.Web.API.DAL.Repositories;
 
 namespace FidelityStatement.Web.API.Controllers
 {
@@ -16,10 +18,13 @@ namespace FidelityStatement.Web.API.Controllers
     public class PositionOptionsController : ControllerBase
     {
         private readonly FidelityStatementDbContext _context;
+        private readonly IStockRepository _stockRepository;
 
-        public PositionOptionsController(FidelityStatementDbContext context)
-        {
-            _context = context;            
+        public PositionOptionsController(FidelityStatementDbContext context,
+                                IStockRepository stockRepository)
+        { 
+            _context = context;
+            _stockRepository = stockRepository;
         }
 
         // GET: api/PositionOptions
@@ -104,8 +109,26 @@ namespace FidelityStatement.Web.API.Controllers
                         OptionType = item.OptionType,
                         StrikePrice = item.StrikePrice,
                         ExpirationDate = item.ExpirationDate,
-                        StockId = item.StockId,
-                        //Name = item.OptionSymbol,
+                        StockId = _stockRepository.StockId(item.StockSymbol, item.UserUUID),
+                        isSettled = true,
+                        //Description = $"{item.StockSymbol} Closed {item.StrikePrice} {item.OptionType}",
+                        BrokerageAccount = item.BrokerageAccount,
+                        UserUUID = item.UserUUID,
+                        Amount = item.TotalAmount
+                    };
+                    _context.PositionOptions.Add(thisPosition);
+                    await _context.SaveChangesAsync();
+                }
+                if (item.TransactionCount == 1 &&   IsEven(item.PositionTypeId))        
+                    {
+                    var thisPosition = new PositionOption
+                    {
+                        StockSymbol = item.StockSymbol,
+                        OptionType = item.OptionType,
+                        StrikePrice = item.StrikePrice,
+                        ExpirationDate = item.ExpirationDate,
+                        StockId = _stockRepository.StockId(item.StockSymbol, item.UserUUID),
+                        isSettled = false,
                         //Description = $"{item.StockSymbol} Closed {item.StrikePrice} {item.OptionType}",
                         BrokerageAccount = item.BrokerageAccount,
                         UserUUID = item.UserUUID,
